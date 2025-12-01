@@ -73,6 +73,10 @@ public class MenuMultijugador : MonoBehaviour
         if (exito)
         {
             Debug.Log("Host iniciado exitosamente");
+
+            // NUEVO: Crear GestorSeleccionRed
+            CrearGestorSeleccionRed();
+
             // Ir a la escena de lobby
             SceneManager.LoadScene("Lobby");
         }
@@ -178,6 +182,34 @@ public class MenuMultijugador : MonoBehaviour
     public void FuncionDePrueba()
     {
         Debug.Log("¡El script funciona! Las funciones deberían aparecer.");
+    }
+
+    // NUEVO: Crear GestorSeleccionRed
+    void CrearGestorSeleccionRed()
+    {
+        // Verificar si ya existe
+        GestorSeleccionRed gestorExistente = FindObjectOfType<GestorSeleccionRed>();
+
+        if (gestorExistente != null)
+        {
+            Debug.Log("GestorSeleccionRed ya existe");
+            return;
+        }
+
+        // Crear nuevo GameObject
+        GameObject gestorObj = new GameObject("GestorSeleccionRed");
+
+        // Agregar componentes
+        GestorSeleccionRed gestor = gestorObj.AddComponent<GestorSeleccionRed>();
+        NetworkObject netObj = gestorObj.AddComponent<NetworkObject>();
+
+        // Hacer que persista entre escenas
+        DontDestroyOnLoad(gestorObj);
+
+        // Spawnearlo en la red
+        netObj.Spawn();
+
+        Debug.Log("GestorSeleccionRed creado y spawneado");
     }
 
     void OnDestroy()
