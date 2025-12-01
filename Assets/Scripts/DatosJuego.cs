@@ -2,109 +2,98 @@ using UnityEngine;
 
 public static class DatosJuego
 {
-    // ========================================
-    // MODO SINGLE PLAYER (Original)
-    // ========================================
-    public static string personajeSeleccionado
-    {
-        get
-        {
-            // En single player, usar J1
-            return personajeSeleccionadoJ1;
-        }
-        set
-        {
-            personajeSeleccionadoJ1 = value;
-        }
-    }
+    // Datos de personaje
+    public static string personajeSeleccionado = "";
+    public static int indicePersonajeSeleccionado = 0;
 
-    public static int indicePersonajeSeleccionado
-    {
-        get
-        {
-            // En single player, usar J1
-            return indicePersonajeSeleccionadoJ1;
-        }
-        set
-        {
-            indicePersonajeSeleccionadoJ1 = value;
-        }
-    }
+    // Datos de mapa
+    public static string mapaSeleccionado = "";
+    public static int indiceMapaSeleccionado = 0;
 
-    // ========================================
-    // MODO MULTIJUGADOR
-    // ========================================
-
-    // Datos Jugador 1 (Host)
-    public static string personajeSeleccionadoJ1;
-    public static int indicePersonajeSeleccionadoJ1;
-
-    // Datos Jugador 2 (Cliente)
-    public static string personajeSeleccionadoJ2;
-    public static int indicePersonajeSeleccionadoJ2;
-
-    // ========================================
-    // MAPA (compartido)
-    // ========================================
-    public static string mapaSeleccionado;
-    public static int indiceMapaSeleccionado;
-
-    // ========================================
-    // CONTROL DE RED
-    // ========================================
-    public static bool esMultijugador = false; // Indica si estamos en modo multijugador
+    // Modo de juego
+    public static bool esModoMultijugador = false;
     public static bool esHost = false;
-    public static bool jugador1Listo = false;
-    public static bool jugador2Listo = false;
 
-    // Código de sala (generado por el host)
+    // Datos de personajes en multijugador
+    public static string personajeJugador1 = "";
+    public static int indicePersonajeJugador1 = 0;
+
+    public static string personajeJugador2 = "";
+    public static int indicePersonajeJugador2 = 0;
+
+    // Código de sala para multijugador (PÚBLICO para acceso directo)
     public static string codigoSala = "";
 
-    // ========================================
-    // MÉTODOS ÚTILES
-    // ========================================
+    // ============================================
+    // MÉTODOS CON SOBRECARGA (para compatibilidad)
+    // ============================================
 
-    public static void LimpiarDatos()
+    // Versión con parámetro booleano (usado por MenuMultijugador)
+    public static void ConfigurarMultijugador(bool comoHost)
     {
-        personajeSeleccionadoJ1 = null;
-        indicePersonajeSeleccionadoJ1 = -1;
-        personajeSeleccionadoJ2 = null;
-        indicePersonajeSeleccionadoJ2 = -1;
-        mapaSeleccionado = null;
-        indiceMapaSeleccionado = -1;
-        jugador1Listo = false;
-        jugador2Listo = false;
-        codigoSala = "";
-        esMultijugador = false;
-        esHost = false;
+        esModoMultijugador = true;
+        esHost = comoHost;
+        Debug.Log($"Modo configurado: Multiplayer - {(comoHost ? "HOST" : "CLIENTE")}");
     }
 
-    // Método para configurar modo single player
+    // Versión sin parámetros (usado por otros scripts)
+    public static void ConfigurarMultijugador()
+    {
+        esModoMultijugador = true;
+        Debug.Log("Modo configurado: Multiplayer");
+    }
+
+    // ============================================
+    // MÉTODOS ADICIONALES
+    // ============================================
+
     public static void ConfigurarSinglePlayer()
     {
-        esMultijugador = false;
+        esModoMultijugador = false;
         esHost = false;
         Debug.Log("Modo configurado: Single Player");
     }
 
-    // Método para configurar modo multijugador
-    public static void ConfigurarMultijugador(bool comoHost)
+    public static void ConfigurarMultiplayer()
     {
-        esMultijugador = true;
-        esHost = comoHost;
-        Debug.Log($"Modo configurado: Multijugador ({(comoHost ? "Host" : "Cliente")})");
+        esModoMultijugador = true;
+        Debug.Log("Modo configurado: Multiplayer");
     }
 
-    // Método para debug
-    public static void MostrarEstado()
+    public static bool EsModoMultijugador()
     {
-        Debug.Log("=== ESTADO DE DATOSJUEGO ===");
-        Debug.Log($"Modo Multijugador: {esMultijugador}");
-        Debug.Log($"Es Host: {esHost}");
-        Debug.Log($"Personaje J1: {personajeSeleccionadoJ1} (índice: {indicePersonajeSeleccionadoJ1})");
-        Debug.Log($"Personaje J2: {personajeSeleccionadoJ2} (índice: {indicePersonajeSeleccionadoJ2})");
-        Debug.Log($"Mapa: {mapaSeleccionado} (índice: {indiceMapaSeleccionado})");
-        Debug.Log($"Código Sala: {codigoSala}");
-        Debug.Log("============================");
+        return esModoMultijugador;
+    }
+
+    public static bool EsHost()
+    {
+        return esHost;
+    }
+
+    public static void EstablecerCodigoSala(string codigo)
+    {
+        codigoSala = codigo;
+        Debug.Log($"Código de sala establecido: {codigo}");
+    }
+
+    public static string ObtenerCodigoSala()
+    {
+        return codigoSala;
+    }
+
+    public static void LimpiarDatos()
+    {
+        personajeSeleccionado = "";
+        indicePersonajeSeleccionado = 0;
+        mapaSeleccionado = "";
+        indiceMapaSeleccionado = 0;
+        esModoMultijugador = false;
+        esHost = false;
+        personajeJugador1 = "";
+        indicePersonajeJugador1 = 0;
+        personajeJugador2 = "";
+        indicePersonajeJugador2 = 0;
+        codigoSala = "";
+        Debug.Log("Datos del juego limpiados");
     }
 }
