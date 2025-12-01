@@ -1,0 +1,4 @@
+repository "2dGameMau/Yes@4673280410335@cloud"
+  path "/"
+    br "/main"
+    co "/main"
