@@ -11,7 +11,10 @@ public class ControladorMenuPrincipal : MonoBehaviour
         // Reproducir sonido específico de Comenzar
         ControladorSonidos.ObtenerInstancia()?.SonidoBotonComenzar();
 
-        Debug.Log("¡Juego iniciado!");
+        // IMPORTANTE: Configurar modo Single Player
+        DatosJuego.ConfigurarSinglePlayer();
+
+        Debug.Log("¡Juego iniciado en modo Single Player!");
         SceneManager.LoadScene("SeleccionPersonaje");
     }
 
