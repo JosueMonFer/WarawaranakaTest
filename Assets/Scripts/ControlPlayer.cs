@@ -8,7 +8,7 @@ public class ControlPlayer : MonoBehaviour
     public Rigidbody2D rb;
     public float velocidadMovimiento = 5f;
     public float fuerzaSalto = 7f; // Fuerza para el salto
-    private float vidaActual = 100f;
+    public float vidaActual = 100f;
     [Header("Configuraci�n de Controles")]
     [Tooltip("Si es True usa A,W,D. Si es False usa Flechas.")]
     public bool usarControlesWASD = true;
