@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -16,15 +17,19 @@ public class ControladorSeleccion : MonoBehaviour
     public Button botonAtras;
 
     [Header("UI Multijugador")]
-    public TextMeshProUGUI textoEstado; // Para mostrar "Esperando al otro jugador..."
-    public GameObject panelEspera; // Panel que se muestra mientras se espera
+    public TextMeshProUGUI textoEstado;
+    public GameObject panelEspera;
 
     private TarjetaPersonaje tarjetaSeleccionada;
     private GestorSeleccionRed gestorRed;
     private bool yoEstoyListo = false;
+    private bool esModoMultijugador;
 
     void Start()
     {
+        // Determinar si estamos en modo multijugador
+        esModoMultijugador = DatosJuego.EsModoMultijugador();
+
         // Inicializar todas las tarjetas
         foreach (var tarjeta in tarjetas)
         {
@@ -46,16 +51,14 @@ public class ControladorSeleccion : MonoBehaviour
             panelEspera.SetActive(false);
 
         // Si es multijugador, obtener gestor de red
-        if (DatosJuego.EsModoMultijugador())
+        if (esModoMultijugador)
         {
-            // Intentar obtener el gestor, si no existe, esperar
             StartCoroutine(EsperarGestorRed());
         }
     }
 
-    System.Collections.IEnumerator EsperarGestorRed()
+    IEnumerator EsperarGestorRed()
     {
-        // Esperar hasta que el GestorSeleccionRed esté disponible
         float tiempoEspera = 0f;
         while (gestorRed == null && tiempoEspera < 5f)
         {
@@ -63,7 +66,7 @@ public class ControladorSeleccion : MonoBehaviour
 
             if (gestorRed == null)
             {
-                yield return new UnityEngine.WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.1f);
                 tiempoEspera += 0.1f;
             }
         }
@@ -76,6 +79,9 @@ public class ControladorSeleccion : MonoBehaviour
 
         Debug.Log("GestorSeleccionRed encontrado correctamente");
 
+        // Restablecer estados al iniciar
+        gestorRed.RestablecerEstados();
+
         // Suscribirse a cambios en las variables de red
         gestorRed.hostListo.OnValueChanged += OnCambioEstadoJugadores;
         gestorRed.clienteListo.OnValueChanged += OnCambioEstadoJugadores;
@@ -83,7 +89,6 @@ public class ControladorSeleccion : MonoBehaviour
 
     void OnDestroy()
     {
-        // Desuscribirse de eventos
         if (gestorRed != null)
         {
             gestorRed.hostListo.OnValueChanged -= OnCambioEstadoJugadores;
@@ -93,6 +98,7 @@ public class ControladorSeleccion : MonoBehaviour
 
     void OnCambioEstadoJugadores(bool valorAnterior, bool valorNuevo)
     {
+        Debug.Log($"Cambio de estado detectado - Host: {gestorRed.hostListo.Value}, Cliente: {gestorRed.clienteListo.Value}");
         VerificarSiAmbosListos();
     }
 
@@ -103,15 +109,36 @@ public class ControladorSeleccion : MonoBehaviour
             Debug.Log("¡Ambos jugadores listos! Avanzando a selección de mapa...");
 
             if (textoEstado != null)
-                textoEstado.text = "¡Ambos listos!";
+                textoEstado.text = "¡Ambos listos! Cargando...";
 
             // Esperar un momento antes de cambiar de escena
-            Invoke("IrASeleccionMapa", 1f);
+            Invoke(nameof(IrASeleccionMapa), 1f);
+        }
+        else if (yoEstoyListo)
+        {
+            // Actualizar texto mientras esperamos
+            if (textoEstado != null)
+            {
+                if (NetworkManager.Singleton.IsHost)
+                {
+                    textoEstado.text = gestorRed.clienteListo.Value ?
+                        "¡Ambos listos!" : "Esperando al cliente...";
+                }
+                else
+                {
+                    textoEstado.text = gestorRed.hostListo.Value ?
+                        "¡Ambos listos!" : "Esperando al host...";
+                }
+            }
         }
     }
 
     public void SeleccionarPersonaje(TarjetaPersonaje tarjeta)
     {
+        // Solo permitir selección si no estamos listos
+        if (yoEstoyListo)
+            return;
+
         // Desactivar la tarjeta anterior
         if (tarjetaSeleccionada != null)
         {
@@ -131,18 +158,16 @@ public class ControladorSeleccion : MonoBehaviour
     public void ConfirmarSeleccion()
     {
         if (tarjetaSeleccionada == null) return;
+        if (yoEstoyListo) return; // Evitar confirmar dos veces
 
-        // Reproducir sonido específico del botón Listo
+        // Reproducir sonido
         ControladorSonidos.ObtenerInstancia()?.SonidoBotonListo();
 
-        // Verificar si es modo multijugador
-        if (DatosJuego.EsModoMultijugador() && NetworkManager.Singleton != null)
+        yoEstoyListo = true;
+        botonListo.interactable = false;
+
+        if (esModoMultijugador && NetworkManager.Singleton != null)
         {
-            yoEstoyListo = true;
-
-            // Deshabilitar botón para que no se pueda presionar de nuevo
-            botonListo.interactable = false;
-
             // Mostrar panel de espera
             if (panelEspera != null)
                 panelEspera.SetActive(true);
@@ -154,11 +179,11 @@ public class ControladorSeleccion : MonoBehaviour
                 DatosJuego.indicePersonajeJugador1 = tarjetaSeleccionada.indicePersonaje;
 
                 if (textoEstado != null)
-                    textoEstado.text = "Esperando al otro jugador...";
+                    textoEstado.text = "Esperando al cliente...";
 
-                Debug.Log("Host confirmó: " + tarjetaSeleccionada.ObtenerNombre());
+                Debug.Log($"Host confirmó: {tarjetaSeleccionada.ObtenerNombre()}");
 
-                // Notificar al servidor (el host es el servidor)
+                // Notificar al servidor
                 if (gestorRed != null)
                 {
                     gestorRed.EstablecerPersonajeHostServerRpc(tarjetaSeleccionada.indicePersonaje);
@@ -172,9 +197,9 @@ public class ControladorSeleccion : MonoBehaviour
                 DatosJuego.indicePersonajeJugador2 = tarjetaSeleccionada.indicePersonaje;
 
                 if (textoEstado != null)
-                    textoEstado.text = "Esperando al otro jugador...";
+                    textoEstado.text = "Esperando al host...";
 
-                Debug.Log("Cliente confirmó: " + tarjetaSeleccionada.ObtenerNombre());
+                Debug.Log($"Cliente confirmó: {tarjetaSeleccionada.ObtenerNombre()}");
 
                 // Notificar al servidor
                 if (gestorRed != null)
@@ -189,28 +214,38 @@ public class ControladorSeleccion : MonoBehaviour
         }
         else
         {
-            // Modo single player (código original)
+            // Modo single player
             DatosJuego.personajeSeleccionado = tarjetaSeleccionada.ObtenerNombre();
             DatosJuego.indicePersonajeSeleccionado = tarjetaSeleccionada.indicePersonaje;
 
-            Debug.Log("¡Confirmado! Personaje: " + tarjetaSeleccionada.ObtenerNombre());
-
-            // Cargar escena de selección de mapa directamente
+            Debug.Log($"¡Confirmado! Personaje: {tarjetaSeleccionada.ObtenerNombre()}");
             SceneManager.LoadScene("SeleccionMapa");
         }
     }
 
     void IrASeleccionMapa()
     {
-        SceneManager.LoadScene("SeleccionMapa");
+        Debug.Log("Cambiando a escena de selección de mapa...");
+
+        // Solo el host cambia la escena en multijugador
+        if (esModoMultijugador && NetworkManager.Singleton != null)
+        {
+            if (NetworkManager.Singleton.IsHost)
+            {
+                NetworkManager.Singleton.SceneManager.LoadScene("SeleccionMapa", LoadSceneMode.Single);
+            }
+        }
+        else
+        {
+            SceneManager.LoadScene("SeleccionMapa");
+        }
     }
 
     public void RegresarAlMenu()
     {
         ControladorSonidos.ObtenerInstancia()?.SonidoBotonAtras();
 
-        // Si estamos en multijugador, desconectar
-        if (DatosJuego.EsModoMultijugador())
+        if (esModoMultijugador)
         {
             MenuMultijugador menuMulti = FindObjectOfType<MenuMultijugador>();
             if (menuMulti != null)

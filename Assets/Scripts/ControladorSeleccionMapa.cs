@@ -221,17 +221,22 @@ public class ControladorSeleccionMapa : MonoBehaviour
                 Debug.Log("Deteniendo musica del menu...");
                 musicaMenu.DetenerMusica();
             }
-            else
-            {
-                Debug.LogWarning("No se encontro el ControladorMusica del menu!");
-            }
 
             // Guardar datos del mapa seleccionado
             DatosJuego.mapaSeleccionado = mapaSeleccionado.ObtenerNombre();
             DatosJuego.indiceMapaSeleccionado = mapaSeleccionado.ObtenerIndiceMapa();
 
-            // Cargar pantalla de carga (que luego cargará la escena de pelea)
-            SceneManager.LoadScene("PantallaCarga");
+            // Cargar pantalla de carga
+            if (DatosJuego.EsModoMultijugador() && NetworkManager.Singleton != null && NetworkManager.Singleton.IsHost)
+            {
+                // En multijugador, solo el host carga la escena
+                NetworkManager.Singleton.SceneManager.LoadScene("PantallaCarga", LoadSceneMode.Single);
+            }
+            else if (!DatosJuego.EsModoMultijugador())
+            {
+                // En single player, carga normal
+                SceneManager.LoadScene("PantallaCarga");
+            }
         }
         else
         {
