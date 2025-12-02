@@ -71,10 +71,11 @@ public class GestorSeleccionRed : NetworkBehaviour
 
     public void RestablecerEstados()
     {
-        if (IsServer)
+        if (IsServer)  // Solo el servidor puede modificar NetworkVariables
         {
             hostListo.Value = false;
             clienteListo.Value = false;
+            Debug.Log("Estados de jugadores restablecidos por el servidor");
         }
     }
 }

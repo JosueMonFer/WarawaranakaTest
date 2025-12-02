@@ -24,6 +24,7 @@ public class ControladorSeleccion : MonoBehaviour
     private GestorSeleccionRed gestorRed;
     private bool yoEstoyListo = false;
     private bool esModoMultijugador;
+    private bool yaVerifiqueTransicion = false; // NUEVO: Evita verificaciones múltiples
 
     void Start()
     {
@@ -80,11 +81,20 @@ public class ControladorSeleccion : MonoBehaviour
         Debug.Log("GestorSeleccionRed encontrado correctamente");
 
         // Restablecer estados al iniciar
-        gestorRed.RestablecerEstados();
+        if (NetworkManager.Singleton.IsServer)
+        {
+            gestorRed.RestablecerEstados();
+        }
+
+        // Esperar un frame para asegurar que las variables de red estén inicializadas
+        yield return null;
 
         // Suscribirse a cambios en las variables de red
         gestorRed.hostListo.OnValueChanged += OnCambioEstadoJugadores;
         gestorRed.clienteListo.OnValueChanged += OnCambioEstadoJugadores;
+
+        // Verificar estado inicial (por si ya hay datos)
+        VerificarSiAmbosListos();
     }
 
     void OnDestroy()
@@ -104,9 +114,14 @@ public class ControladorSeleccion : MonoBehaviour
 
     void VerificarSiAmbosListos()
     {
-        if (gestorRed != null && gestorRed.AmbosJugadoresListos() && yoEstoyListo)
+        // Evitar verificaciones múltiples
+        if (yaVerifiqueTransicion)
+            return;
+
+        if (gestorRed != null && gestorRed.AmbosJugadoresListos())
         {
             Debug.Log("¡Ambos jugadores listos! Avanzando a selección de mapa...");
+            yaVerifiqueTransicion = true; // IMPORTANTE: Marcar que ya verificamos
 
             if (textoEstado != null)
                 textoEstado.text = "¡Ambos listos! Cargando...";
@@ -188,6 +203,9 @@ public class ControladorSeleccion : MonoBehaviour
                 {
                     gestorRed.EstablecerPersonajeHostServerRpc(tarjetaSeleccionada.indicePersonaje);
                     gestorRed.MarcarHostListoServerRpc();
+
+                    // IMPORTANTE: Verificar inmediatamente después de marcar
+                    StartCoroutine(VerificarDespuesDeMoment());
                 }
             }
             else if (NetworkManager.Singleton.IsClient)
@@ -206,11 +224,11 @@ public class ControladorSeleccion : MonoBehaviour
                 {
                     gestorRed.EstablecerPersonajeClienteServerRpc(tarjetaSeleccionada.indicePersonaje);
                     gestorRed.MarcarClienteListoServerRpc();
+
+                    // IMPORTANTE: Verificar inmediatamente después de marcar
+                    StartCoroutine(VerificarDespuesDeMoment());
                 }
             }
-
-            // Verificar si ambos ya están listos
-            VerificarSiAmbosListos();
         }
         else
         {
@@ -221,6 +239,13 @@ public class ControladorSeleccion : MonoBehaviour
             Debug.Log($"¡Confirmado! Personaje: {tarjetaSeleccionada.ObtenerNombre()}");
             SceneManager.LoadScene("SeleccionMapa");
         }
+    }
+
+    // NUEVO: Verificar después de un breve momento para dar tiempo a la sincronización
+    IEnumerator VerificarDespuesDeMoment()
+    {
+        yield return new WaitForSeconds(0.2f);
+        VerificarSiAmbosListos();
     }
 
     void IrASeleccionMapa()
@@ -234,6 +259,7 @@ public class ControladorSeleccion : MonoBehaviour
             {
                 NetworkManager.Singleton.SceneManager.LoadScene("SeleccionMapa", LoadSceneMode.Single);
             }
+            // El cliente NO hace nada, la transición la maneja el host
         }
         else
         {
