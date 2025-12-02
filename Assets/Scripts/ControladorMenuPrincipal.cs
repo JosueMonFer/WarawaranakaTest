@@ -11,49 +11,8 @@ public class ControladorMenuPrincipal : MonoBehaviour
         // Reproducir sonido específico de Comenzar
         ControladorSonidos.ObtenerInstancia()?.SonidoBotonComenzar();
 
-        // IMPORTANTE: Configurar modo Single Player
-        DatosJuego.ConfigurarSinglePlayer();
-
-        Debug.Log("¡Juego iniciado en modo Single Player!");
+        Debug.Log("¡Juego iniciado!");
         SceneManager.LoadScene("SeleccionPersonaje");
-    }
-
-    // NUEVO: Crear partida (Host)
-    public void CrearPartida()
-    {
-        ControladorSonidos.ObtenerInstancia()?.SonidoBotonComenzar();
-
-        // Configurar modo multijugador
-        DatosJuego.ConfigurarMultiplayer();
-
-        // Configurar como host
-        SistemaSalas sistemaSalas = SistemaSalas.ObtenerInstancia();
-        if (sistemaSalas != null)
-        {
-            sistemaSalas.EstablecerComoHost();
-        }
-
-        Debug.Log("Creando partida multijugador (Host)");
-        SceneManager.LoadScene("Lobby");
-    }
-
-    // NUEVO: Unirse a partida (Cliente)
-    public void UnirseAPartida()
-    {
-        ControladorSonidos.ObtenerInstancia()?.SonidoBotonComenzar();
-
-        // Configurar modo multijugador
-        DatosJuego.ConfigurarMultiplayer();
-
-        // Configurar como cliente
-        SistemaSalas sistemaSalas = SistemaSalas.ObtenerInstancia();
-        if (sistemaSalas != null)
-        {
-            sistemaSalas.EstablecerComoCliente();
-        }
-
-        Debug.Log("Uniéndose a partida multijugador (Cliente)");
-        SceneManager.LoadScene("Lobby");
     }
 
     public void AbrirAjustes()

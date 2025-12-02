@@ -2997,12 +2997,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c50acd5d35f4a4ab8261743d413254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  thrustforce: 2.5
+  thrustforce: 1
   maxSpeed: 5
   boosterFlame: {fileID: 1333472393}
   scoreMultiplier: 10
   uiDocument: {fileID: 109249064}
-  explosionEffect: {fileID: 4312915878902867418, guid: ce9027cc5b1edbf4e9520c01aaed73dd, type: 3}
+  explosionEffect: {fileID: 0}
   borderParent: {fileID: 1340563273}
 --- !u!1 &1692218448
 GameObject:
@@ -8270,7 +8270,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 0.764151, g: 0.7533375, b: 0.7533375, a: 1}
+  m_Color: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
