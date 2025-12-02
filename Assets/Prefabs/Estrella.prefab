@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 6925193948975654177}
   - component: {fileID: 7018279699735527048}
   - component: {fileID: 7811913043041244356}
-  - component: {fileID: 3790983916836280748}
+  - component: {fileID: 3414222064290649501}
+  - component: {fileID: 4410535954804378540}
   m_Layer: 0
   m_Name: Estrella
   m_TagString: Estrella
@@ -128,7 +129,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!114 &3790983916836280748
+--- !u!114 &3414222064290649501
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,10 +138,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 5253187609744351494}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6eaad9ca0bf25440972de8e3d0f5d93, type: 3}
+  m_Script: {fileID: 11500000, guid: 2c0ceced2b3355149b8d5155e18ec9a4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EstrellaCaidaMinijuego1
-  velocidadCaida: 3
-  velocidadRotacion: 100
-  limiteBajo: -6
-  efectoParticulas: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::Estrella
+  velocidadCaida: 5
+  velocidadRotacion: 0
+--- !u!50 &4410535954804378540
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5253187609744351494}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

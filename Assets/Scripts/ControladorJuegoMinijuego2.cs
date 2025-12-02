@@ -1,85 +1,91 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ControladorJuegoMinijuego2 : MonoBehaviour
 {
-    public static ControladorJuegoMinijuego2 instance; // CAMBIADO
-
-    public CeldaMinijuego2[] cells; // CAMBIADO
+    public CeldaMinijuego2[] cells;
     public Text turnText;
     public Text resultText;
     public Button restartButton;
+    public Button menuButton;
 
     private string currentPlayer = "X";
     private string[] board = new string[9];
-    private bool gameEnded = false;
-
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-    }
+    private bool gameOver = false;
 
     void Start()
     {
-        restartButton.onClick.AddListener(RestartGame);
+        // Configurar los botones
+        if (restartButton != null)
+        {
+            restartButton.onClick.AddListener(RestartGame);
+            restartButton.gameObject.SetActive(false);
+        }
+
+        if (menuButton != null)
+        {
+            menuButton.onClick.AddListener(GoToMenu);
+            menuButton.gameObject.SetActive(false);
+        }
+
+        // Inicializar el tablero
+        for (int i = 0; i < board.Length; i++)
+        {
+            board[i] = "";
+        }
+
+        // Configurar las celdas
+        for (int i = 0; i < cells.Length; i++)
+        {
+            int index = i;
+            cells[i].GetComponent<Button>().onClick.AddListener(() => OnCellClick(index));
+        }
+
         UpdateTurnText();
-        resultText.text = "";
     }
 
-    public void MakeMove(int index)
+    void OnCellClick(int index)
     {
-        if (gameEnded || board[index] != null)
+        if (gameOver || board[index] != "")
             return;
 
         board[index] = currentPlayer;
         cells[index].SetSymbol(currentPlayer);
 
-        if (CheckWinner())
+        if (CheckWin())
         {
-            resultText.text = "¡Jugador " + currentPlayer + " gana!";
+            gameOver = true;
+            resultText.text = "¡Jugador " + currentPlayer + " Gana!";
             resultText.color = Color.green;
-            gameEnded = true;
+            ShowEndGameButtons();
             return;
         }
 
         if (CheckDraw())
         {
+            gameOver = true;
             resultText.text = "¡Empate!";
             resultText.color = Color.yellow;
-            gameEnded = true;
+            ShowEndGameButtons();
             return;
         }
 
-        SwitchPlayer();
+        // Cambiar de jugador
+        currentPlayer = currentPlayer == "X" ? "O" : "X";
         UpdateTurnText();
     }
 
-    void SwitchPlayer()
-    {
-        currentPlayer = (currentPlayer == "X") ? "O" : "X";
-    }
-
-    void UpdateTurnText()
-    {
-        turnText.text = "Turno del jugador: " + currentPlayer;
-    }
-
-    bool CheckWinner()
+    bool CheckWin()
     {
         // Combinaciones ganadoras
         int[,] winConditions = new int[,]
         {
-            {0, 1, 2}, // Fila 1
-            {3, 4, 5}, // Fila 2
-            {6, 7, 8}, // Fila 3
-            {0, 3, 6}, // Columna 1
-            {1, 4, 7}, // Columna 2
-            {2, 5, 8}, // Columna 3
-            {0, 4, 8}, // Diagonal 1
-            {2, 4, 6}  // Diagonal 2
+            {0, 1, 2}, {3, 4, 5}, {6, 7, 8}, // Filas
+            {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, // Columnas
+            {0, 4, 8}, {2, 4, 6}             // Diagonales
         };
 
         for (int i = 0; i < winConditions.GetLength(0); i++)
@@ -88,7 +94,7 @@ public class ControladorJuegoMinijuego2 : MonoBehaviour
             int b = winConditions[i, 1];
             int c = winConditions[i, 2];
 
-            if (board[a] != null && board[a] == board[b] && board[b] == board[c])
+            if (board[a] != "" && board[a] == board[b] && board[b] == board[c])
             {
                 return true;
             }
@@ -101,24 +107,57 @@ public class ControladorJuegoMinijuego2 : MonoBehaviour
     {
         foreach (string cell in board)
         {
-            if (cell == null)
+            if (cell == "")
                 return false;
         }
         return true;
     }
 
+    void UpdateTurnText()
+    {
+        if (turnText != null)
+        {
+            turnText.text = "Turno del Jugador: " + currentPlayer;
+        }
+    }
+
+    void ShowEndGameButtons()
+    {
+        if (restartButton != null)
+            restartButton.gameObject.SetActive(true);
+
+        if (menuButton != null)
+            menuButton.gameObject.SetActive(true);
+    }
+
     public void RestartGame()
     {
+        // Reiniciar variables
+        gameOver = false;
         currentPlayer = "X";
-        board = new string[9];
-        gameEnded = false;
 
-        foreach (CeldaMinijuego2 cell in cells) // CAMBIADO
+        // Limpiar el tablero
+        for (int i = 0; i < board.Length; i++)
         {
-            cell.Reset();
+            board[i] = "";
+            cells[i].ClearSymbol();
         }
 
-        UpdateTurnText();
+        // Limpiar textos
         resultText.text = "";
+        UpdateTurnText();
+
+        // Ocultar botones
+        if (restartButton != null)
+            restartButton.gameObject.SetActive(false);
+
+        if (menuButton != null)
+            menuButton.gameObject.SetActive(false);
+    }
+
+    public void GoToMenu()
+    {
+        // Cambiar esto por el nombre de tu escena de menú
+        SceneManager.LoadScene("MainMenu");
     }
 }

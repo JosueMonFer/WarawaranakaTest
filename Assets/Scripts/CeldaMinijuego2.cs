@@ -1,58 +1,50 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CeldaMinijuego2 : MonoBehaviour
 {
     public int cellIndex;
-    private Button button;
-    private Text symbolText;
-    private bool isOccupied = false;
+    private Image symbolImage;
+    public Sprite xSprite;
+    public Sprite oSprite;
 
-    void Start()
+    void Awake()
     {
-        button = GetComponent<Button>();
-
-        // Crear el texto para mostrar X u O
-        GameObject textObj = new GameObject("SymbolText");
-        textObj.transform.SetParent(transform);
-        symbolText = textObj.AddComponent<Text>();
-        symbolText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        symbolText.fontSize = 80;
-        symbolText.alignment = TextAnchor.MiddleCenter;
-        symbolText.color = Color.black;
-        symbolText.text = "";
-
-        RectTransform rectTransform = symbolText.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = Vector2.zero;
-        rectTransform.sizeDelta = new Vector2(180, 180);
-
-        button.onClick.AddListener(OnCellClicked);
-    }
-
-    void OnCellClicked()
-    {
-        if (!isOccupied && ControladorJuegoMinijuego2.instance != null) // CAMBIADO
+        // Obtener la imagen del símbolo (el hijo de la celda)
+        symbolImage = transform.GetChild(0).GetComponent<Image>();
+        if (symbolImage != null)
         {
-            ControladorJuegoMinijuego2.instance.MakeMove(cellIndex); // CAMBIADO
+            symbolImage.gameObject.SetActive(false);
         }
     }
 
-    public void SetSymbol(string symbol)
+    public void SetSymbol(string player)
     {
-        symbolText.text = symbol;
-        isOccupied = true;
-        button.interactable = false;
+        if (symbolImage != null)
+        {
+            symbolImage.gameObject.SetActive(true);
+
+            if (player == "X")
+            {
+                symbolImage.sprite = xSprite;
+                symbolImage.color = Color.red;
+            }
+            else
+            {
+                symbolImage.sprite = oSprite;
+                symbolImage.color = Color.blue;
+            }
+        }
     }
 
-    public void Reset()
+    public void ClearSymbol()
     {
-        symbolText.text = "";
-        isOccupied = false;
-        button.interactable = true;
-    }
-
-    public bool IsOccupied()
-    {
-        return isOccupied;
+        if (symbolImage != null)
+        {
+            symbolImage.gameObject.SetActive(false);
+            symbolImage.sprite = null;
+        }
     }
 }

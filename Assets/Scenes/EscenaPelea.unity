@@ -3095,7 +3095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c9bc5ba62c71d84b98d5f5364e45011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TemporizadorPelea
-  duracionPelea: 10
+  duracionPelea: 120
   textoTemporizador: {fileID: 326615806}
   panelResultadoEmpate: {fileID: 542289199}
   textoResultado: {fileID: 384942850}

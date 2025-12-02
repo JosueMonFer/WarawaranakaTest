@@ -1,11 +1,11 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ControladorJuegoMinijuego1 : MonoBehaviour
 {
-    [Header("Configuracion")]
+    [Header("Configuración del Jugador")]
     public float velocidadMovimiento = 10f;
     public float limiteIzquierdo = -8f;
     public float limiteDerecho = 8f;
@@ -18,130 +18,100 @@ public class ControladorJuegoMinijuego1 : MonoBehaviour
     public Button botonReiniciar;
     public Button botonMenu;
 
-    [Header("Sonidos (Opcional)")]
+    [Header("Audio")]
     public AudioClip sonidoAtrapar;
-    private AudioSource audioSource;
 
     private int puntuacion = 0;
     private float tiempoRestante = 30f;
     private bool juegoActivo = true;
-    private Camera camaraPrincipal;
+    private Camera camaraJuego;
+    private AudioSource audioSource;
 
     void Start()
     {
-        camaraPrincipal = Camera.main;
+        camaraJuego = Camera.main;
         audioSource = gameObject.AddComponent<AudioSource>();
 
-        if (panelGameOver != null)
-            panelGameOver.SetActive(false);
-
-        if (botonReiniciar != null)
-            botonReiniciar.onClick.AddListener(Reiniciar);
-
-        if (botonMenu != null)
-            botonMenu.onClick.AddListener(VolverAlMenu);
-
         ActualizarUI();
+        panelGameOver.SetActive(false);
+
+        // Configurar botones
+        botonReiniciar.onClick.AddListener(ReiniciarJuego);
+        botonMenu.onClick.AddListener(VolverAlMenu);
+
+        // Ocultar el cursor y bloquearlo en el centro (opcional)
+        Cursor.visible = true;
     }
 
     void Update()
     {
-        if (!juegoActivo) return;
+        if (juegoActivo)
+        {
+            MoverJugador();
+            ActualizarTiempo();
+        }
+    }
 
-        // Mover el jugador con el mouse
-        MoverConMouse();
+    void MoverJugador()
+    {
+        // Obtener la posición del mouse en el mundo
+        Vector3 posicionMouse = camaraJuego.ScreenToWorldPoint(Input.mousePosition);
 
-        // Actualizar temporizador
+        // Mantener la posición Y del jugador y solo cambiar X
+        float nuevaX = Mathf.Clamp(posicionMouse.x, limiteIzquierdo, limiteDerecho);
+        transform.position = new Vector3(nuevaX, transform.position.y, transform.position.z);
+    }
+
+    void ActualizarTiempo()
+    {
         tiempoRestante -= Time.deltaTime;
+        textoTiempo.text = "Tiempo: " + Mathf.CeilToInt(tiempoRestante).ToString() + "s";
+
         if (tiempoRestante <= 0)
         {
-            FinDelJuego();
+            TerminarJuego();
         }
-
-        ActualizarUI();
     }
 
-    void MoverConMouse()
+    void OnTriggerEnter2D(Collider2D colision)
     {
-        // Obtener posición del mouse en el mundo
-        Vector3 posicionMouse = camaraPrincipal.ScreenToWorldPoint(Input.mousePosition);
-        posicionMouse.z = 0;
-
-        // Mover suavemente hacia el mouse (solo en X)
-        Vector3 posicionObjetivo = new Vector3(posicionMouse.x, transform.position.y, 0);
-        transform.position = Vector3.Lerp(transform.position, posicionObjetivo, velocidadMovimiento * Time.deltaTime);
-
-        // Limitar movimiento horizontal
-        float x = Mathf.Clamp(transform.position.x, limiteIzquierdo, limiteDerecho);
-        transform.position = new Vector3(x, transform.position.y, transform.position.z);
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Estrella"))
+        if (juegoActivo && colision.CompareTag("Estrella"))
         {
-            // Aumentar puntuación
             puntuacion += 10;
+            ActualizarUI();
 
-            // Reproducir sonido
             if (sonidoAtrapar != null)
+            {
                 audioSource.PlayOneShot(sonidoAtrapar);
+            }
 
-            // Destruir la estrella
-            Destroy(other.gameObject);
-
-            // Notificar al generador que aumente la velocidad
-            GeneradorEstrellasMinijuego1 generador = FindFirstObjectByType<GeneradorEstrellasMinijuego1>();
-            if (generador != null)
-                generador.AumentarDificultad();
-        }
-        else if (other.CompareTag("Bomba"))
-        {
-            // Perder puntos
-            puntuacion = Mathf.Max(0, puntuacion - 20);
-            Destroy(other.gameObject);
+            Destroy(colision.gameObject);
         }
     }
 
     void ActualizarUI()
     {
-        if (textoPuntuacion != null)
-            textoPuntuacion.text = "Puntuación: " + puntuacion;
-
-        if (textoTiempo != null)
-            textoTiempo.text = "Tiempo: " + Mathf.CeilToInt(tiempoRestante) + "s";
+        textoPuntuacion.text = "Puntuación: " + puntuacion.ToString();
     }
 
-    void FinDelJuego()
+    void TerminarJuego()
     {
         juegoActivo = false;
-
-        if (panelGameOver != null)
-            panelGameOver.SetActive(true);
-
-        if (textoPuntuacionFinal != null)
-            textoPuntuacionFinal.text = "¡Puntuación Final: " + puntuacion + "!";
-
-        // Detener el generador
-        GeneradorEstrellasMinijuego1 generador = FindFirstObjectByType<GeneradorEstrellasMinijuego1>();
-        if (generador != null)
-            generador.DetenerGeneracion();
+        panelGameOver.SetActive(true);
+        textoPuntuacionFinal.text = "¡Juego Terminado!\nPuntuación Final: " + puntuacion.ToString();
+        Time.timeScale = 0f; // Pausar el juego
     }
 
-    void Reiniciar()
+    void ReiniciarJuego()
     {
-        ControladorSonidos.ObtenerInstancia()?.SonidoBotonComenzar();
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void VolverAlMenu()
     {
-        ControladorSonidos.ObtenerInstancia()?.SonidoBotonAtras();
+        Time.timeScale = 1f;
+        // Cambiar "MenuPrincipal" por el nombre de tu escena de menú
         SceneManager.LoadScene("MainMenu");
-    }
-
-    public bool EstaJuegoActivo()
-    {
-        return juegoActivo;
     }
 }
