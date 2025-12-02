@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-
     public bool usarWASD;
 
     [Header("Referencias")]
-    public Transform puntoDeAtaque; // Arrastra aquí el objeto hijo (Hitbox)
-    public LayerMask capaEnemigos;  // Define qué es un enemigo (Layers)
+    public Transform puntoDeAtaque;
+    public LayerMask capaEnemigos;
+    private Animator anim;
 
     [Header("Estadísticas")]
     public float rangoAtaque = 5f;
@@ -19,92 +19,136 @@ public class PlayerCombat : MonoBehaviour
     private float tiempoSiguienteAtaque = 0f;
 
     [Header("Controles")]
-    // Aquí definimos que la tecla por defecto sea la 'E'
-    private KeyCode teclaAtacarManoIzquierda = KeyCode.E;
-    private KeyCode teclaAtacarPatadaIzquierda = KeyCode.R;
+    // Jugador izquierdo
+    private KeyCode golpeIzq = KeyCode.E;
+    private KeyCode patadaIzq = KeyCode.R;
+    private KeyCode especialIzq = KeyCode.T;
+    private KeyCode ultiIzq = KeyCode.G;
+    private KeyCode comboIzq = KeyCode.F;   // 🔥 COMBO IZQUIERDO (nuevo)
 
-    private KeyCode teclaAtacarManoDerecha = KeyCode.M;
-    private KeyCode teclaAtacarPatadaDerecha = KeyCode.N;
+    // Jugador derecho
+    private KeyCode golpeDer = KeyCode.M;
+    private KeyCode patadaDer = KeyCode.N;
+    private KeyCode especialDer = KeyCode.K;
+    private KeyCode ultiDer = KeyCode.L;
+    private KeyCode comboDer = KeyCode.J;   // 🔥 COMBO DERECHO (nuevo)
 
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     void Update()
     {
-        // Comprobamos si ya pasó el tiempo de espera (Cooldown)
         if (Time.time >= tiempoSiguienteAtaque)
         {
-            // Detectamos si presiona la tecla configurada (E)
-
-            if (usarWASD)//jugador del lado izquierdo
+            if (usarWASD)   // ------------------ JUGADOR IZQUIERDO ------------------
             {
-                if (Input.GetKeyDown(teclaAtacarManoIzquierda))//ataque de puño
+                // --- GOLPE ---
+                if (Input.GetKeyDown(golpeIzq))
                 {
+                    anim.SetTrigger("Punch");
                     Atacar(30);
-                    Debug.Log("Esta atacando");
-                    tiempoSiguienteAtaque = Time.time + tiempoEntreAtaques; // Reseteamos el reloj
+                    tiempoSiguienteAtaque = Time.time + tiempoEntreAtaques;
                 }
-                if(Input.GetKeyDown(teclaAtacarPatadaIzquierda)) //patada
+
+                // --- PATADA ---
+                if (Input.GetKeyDown(patadaIzq))
                 {
+                    anim.SetTrigger("Kick");
                     Atacar(40);
-                    Debug.Log("Esta atacando");
-                    tiempoSiguienteAtaque = Time.time + tiempoEntreAtaques; // Reseteamos el reloj
+                    tiempoSiguienteAtaque = Time.time + tiempoEntreAtaques;
+                }
+
+                // --- COMBO ---
+                if (Input.GetKeyDown(comboIzq))
+                {
+                    anim.SetTrigger("Combo");
+                    Atacar(60);
+                    tiempoSiguienteAtaque = Time.time + 1f;
+                }
+
+                // --- ESPECIAL ---
+                if (Input.GetKeyDown(especialIzq))
+                {
+                    anim.SetTrigger("Special");
+                    Atacar(80);
+                    tiempoSiguienteAtaque = Time.time + 1.2f;
+                }
+
+                // --- ULTI ---
+                if (Input.GetKeyDown(ultiIzq))
+                {
+                    anim.SetTrigger("Ulti");
+                    Atacar(150);
+                    tiempoSiguienteAtaque = Time.time + 2f;
                 }
             }
-            else//jugador del lado derecho
+            else    // ------------------ JUGADOR DERECHO ------------------
             {
-                if (Input.GetKeyDown(teclaAtacarManoDerecha))//ataque de puño
+                // --- GOLPE ---
+                if (Input.GetKeyDown(golpeDer))
                 {
+                    anim.SetTrigger("Punch");
                     Atacar(30);
-                    Debug.Log("Esta atacando");
-                    tiempoSiguienteAtaque = Time.time + tiempoEntreAtaques; // Reseteamos el reloj
-                }
-                if (Input.GetKeyDown(teclaAtacarPatadaDerecha)) //patada
-                {
-                    //
-                    Atacar(30);
-                    Debug.Log("Esta atacando");
-                    tiempoSiguienteAtaque = Time.time + tiempoEntreAtaques; // Reseteamos el reloj                    Atacar(30);
-                    Debug.Log("Esta atacando");
-                    tiempoSiguienteAtaque = Time.time + tiempoEntreAtaques; // Reseteamos el reloj
+                    tiempoSiguienteAtaque = Time.time + tiempoEntreAtaques;
                 }
 
+                // --- PATADA ---
+                if (Input.GetKeyDown(patadaDer))
+                {
+                    anim.SetTrigger("Kick");
+                    Atacar(40);
+                    tiempoSiguienteAtaque = Time.time + tiempoEntreAtaques;
+                }
+
+                // --- COMBO ---
+                if (Input.GetKeyDown(comboDer))
+                {
+                    anim.SetTrigger("Combo");
+                    Atacar(60);
+                    tiempoSiguienteAtaque = Time.time + 1f;
+                }
+
+                // --- ESPECIAL ---
+                if (Input.GetKeyDown(especialDer))
+                {
+                    anim.SetTrigger("Special");
+                    Atacar(80);
+                    tiempoSiguienteAtaque = Time.time + 1.2f;
+                }
+
+                // --- ULTI ---
+                if (Input.GetKeyDown(ultiDer))
+                {
+                    anim.SetTrigger("Ulti");
+                    Atacar(150);
+                    tiempoSiguienteAtaque = Time.time + 2f;
+                }
             }
-
-           
         }
     }
 
     void Atacar(float dano)
     {
-        // 1. Animación (Descomenta cuando tengas animaciones)
-        // Animator anim = GetComponent<Animator>();
-        // if(anim != null) anim.SetTrigger("Atacar");
-
-        Debug.Log("¡Ataque con tecla E!");
-
-        // 2. Detectar enemigos
         if (puntoDeAtaque == null) return;
 
-        Collider2D[] enemigosGolpeados = Physics2D.OverlapCircleAll(puntoDeAtaque.position, rangoAtaque, capaEnemigos);
+        Collider2D[] enemigosGolpeados = Physics2D.OverlapCircleAll(
+            puntoDeAtaque.position, rangoAtaque, capaEnemigos
+        );
 
-        // 3. Aplicar Daño y Empuje
         foreach (Collider2D enemigo in enemigosGolpeados)
         {
-            Debug.Log("Golpeaste a: " + enemigo.name);
-
-            // A. Empuje (Knockback)
             Rigidbody2D rbEnemigo = enemigo.GetComponent<Rigidbody2D>();
             ControlPlayer ScriptVida = rbEnemigo.GetComponentInParent<ControlPlayer>();
             ScriptVida.RecibirDano(dano);
+
             if (rbEnemigo != null)
             {
                 Vector2 direccion = (enemigo.transform.position - transform.position).normalized;
-
-                // Si usas Unity 6 cambia 'velocity' por 'linearVelocity'
                 rbEnemigo.linearVelocity = Vector2.zero;
                 rbEnemigo.AddForce(direccion * fuerzaEmpuje, ForceMode2D.Impulse);
             }
-
-            // B. Aquí iría el código para bajar vida al script del enemigo
         }
     }
 
