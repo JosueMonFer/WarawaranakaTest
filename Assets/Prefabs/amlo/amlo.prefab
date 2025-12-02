@@ -185,7 +185,6 @@ MonoBehaviour:
   rb: {fileID: 1233181557432745302}
   velocidadMovimiento: 5
   fuerzaSalto: 7
-  vidaActual: 100
   usarControlesWASD: 1
   pies: {fileID: 0}
   radioDeteccionSuelo: 0.2
@@ -281,6 +280,7 @@ GameObject:
   - component: {fileID: 3142300059756326722}
   - component: {fileID: 6854857825300148087}
   - component: {fileID: 7509141418082380526}
+  - component: {fileID: 1272194426172516228}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -371,6 +371,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1272194426172516228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7908582893392575130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e80c4b57c5b9f244eace725b69bf0577, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &9028442433317181831
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,7 +394,6 @@ GameObject:
   - component: {fileID: 3944850578633465552}
   - component: {fileID: 8167440344765665077}
   - component: {fileID: 4100861490657042847}
-  - component: {fileID: 7411552832926084279}
   m_Layer: 5
   m_Name: vida
   m_TagString: Untagged
@@ -399,14 +410,14 @@ RectTransform:
   m_GameObject: {fileID: 9028442433317181831}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8866020543350971970}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -404.4, y: -274.86}
+  m_AnchoredPosition: {x: -304, y: -250.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8167440344765665077
@@ -464,14 +475,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -502,23 +513,9 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -50.487732, y: 24.15819, z: 81.79186, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &7411552832926084279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9028442433317181831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e80c4b57c5b9f244eace725b69bf0577, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::vidaPersonaje
-  texto: {fileID: 0}
-  scriptPlaye: {fileID: 0}

@@ -152,7 +152,7 @@ public class TemporizadorPelea : MonoBehaviour
             Debug.LogError("No hay instancia de TemporizadorPelea en la escena!");
             return;
         }
-        //textoResultado.text = "¡GANADOR!";
+
         instancia.MostrarVictoria(numeroJugador);
     }
 
