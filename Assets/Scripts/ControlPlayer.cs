@@ -99,9 +99,22 @@ if (inputHorizontal < 0) transform.localScale = new Vector3(-1, 1, 1);
         // 3. Aplicar Salto
         if (inputSalto && enElSuelo)
         {
+            anim.SetTrigger("JumpTrigger");  // ACTIVAR ANIMACIÓN
+            anim.SetBool("isJumping", true); // MARCAR QUE ESTÁ EN EL AIRE
+
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0); // Reseteamos velocidad vertical para salto consistente
             rb.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);
         }
+        // Actualizar estado de salto
+if (enElSuelo)
+{
+    anim.SetBool("isJumping", false);   // Volver a Idle
+}
+else
+{
+    anim.SetBool("isJumping", true);    // Sigue en el aire
+}
+
     }
 
     // Mantiene al jugador dentro de la c�mara

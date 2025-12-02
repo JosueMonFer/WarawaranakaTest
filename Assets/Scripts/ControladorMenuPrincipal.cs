@@ -15,6 +15,24 @@ public class ControladorMenuPrincipal : MonoBehaviour
         SceneManager.LoadScene("SeleccionPersonaje");
     }
 
+    public void IrAMinijuego1()
+    {
+        // Reproducir sonido de botón
+        ControladorSonidos.ObtenerInstancia()?.SonidoBotonComenzar();
+
+        Debug.Log("Cargando Minijuego 1...");
+        SceneManager.LoadScene("Minijuego1");
+    }
+
+    public void IrAMinijuego2()
+    {
+        // Reproducir sonido de botón
+        ControladorSonidos.ObtenerInstancia()?.SonidoBotonComenzar();
+
+        Debug.Log("Cargando Minijuego 2...");
+        SceneManager.LoadScene("Minijuego2");
+    }
+
     public void AbrirAjustes()
     {
         // Reproducir sonido específico de Ajustes
