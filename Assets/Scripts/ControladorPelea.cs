@@ -1,36 +1,48 @@
 using UnityEngine;
+using System.Collections.Generic; // Necesario para usar List
 
 public class ControladorPelea : MonoBehaviour
 {
+    // ==========================================================
+    // SECCIÓN MAPAS
+    // ==========================================================
+
     [Header("Sprites de Fondo de Mapas")]
     public Sprite fondoMapa0;
     public Sprite fondoMapa1;
     public Sprite fondoMapa2;
     public Sprite fondoMapa3;
 
-    [Header("Sprites de Personajes")]
-    public Sprite personaje0;
-    public Sprite personaje1;
-    public Sprite personaje2;
-    public Sprite personaje3;
-
     [Header("Referencias en Escena")]
     public SpriteRenderer renderizadorFondo;
-    public SpriteRenderer renderizadorJugador;
-    public Transform posicionInicialJugador;
-
-    [Header("Configuracion del Personaje")]
-    public Vector3 escalaPersonaje = new Vector3(1f, 1f, 1f);
-    public int ordenEnCapa = 10;
 
     [Header("Configuracion del Fondo")]
     public bool ajustarFondoAutomaticamente = true;
 
+    // ==========================================================
+    // SECCIÓN PERSONAJES (PREFABS)
+    // ==========================================================
+
+    [Header("Prefabs de Personajes")]
+    public List<GameObject> personajes; // Lista para cargar los prefabs
+
+    [Header("Puntos de Spawn (Vector3)")]
+    // Usamos Vector3 para ser consistentes con el Instantiate
+    public Vector3 posicionPersonajeUno;
+    public Vector3 posicionPersonajeDos;
+
+    // ==========================================================
+    // SECCIÓN SISTEMAS
+    // ==========================================================
+
     [Header("Sistema de Vida - Referencias UI")]
     public SistemaVidaPersonaje sistemaVidaPersonaje; // Asignar en el Inspector
 
-    [Header("Sistema de Pelea")]
-    public ControladorPersonajePelea controladorPelea; // Se asignará automáticamente
+
+
+    // ==========================================================
+    // CICLO DE VIDA
+    // ==========================================================
 
     void Start()
     {
@@ -38,8 +50,12 @@ public class ControladorPelea : MonoBehaviour
         CargarMapa();
         CargarPersonaje();
         ConfigurarSistemaVida();
-        ConfigurarSistemaPelea();
+        // ConfigurarSistemaPelea(); // Mantenido comentado según tu script original
     }
+
+    // ==========================================================
+    // FUNCIONES DE VERIFICACIÓN
+    // ==========================================================
 
     void VerificarReferencias()
     {
@@ -47,22 +63,15 @@ public class ControladorPelea : MonoBehaviour
         {
             Debug.LogError("¡El SpriteRenderer del fondo no está asignado!");
         }
-
-        if (renderizadorJugador == null)
-        {
-            Debug.LogError("¡El SpriteRenderer del personaje no está asignado!");
-        }
-
-        if (posicionInicialJugador == null)
-        {
-            Debug.LogWarning("No hay posición inicial asignada. El personaje aparecerá en (0,0,0)");
-        }
-
         if (sistemaVidaPersonaje == null)
         {
             Debug.LogError("¡SistemaVidaPersonaje no está asignado! Busca el objeto en la escena y asígnalo.");
         }
     }
+
+    // ==========================================================
+    // FUNCIONES DE CARGA
+    // ==========================================================
 
     void CargarMapa()
     {
@@ -73,29 +82,27 @@ public class ControladorPelea : MonoBehaviour
 
         Debug.Log($"Cargando mapa: {nombreMapa} (Índice: {indiceMapa})");
 
+        // Uso de switch para asignar el sprite de fondo
         switch (indiceMapa)
         {
             case 0:
                 renderizadorFondo.sprite = fondoMapa0;
-                Debug.Log("Fondo asignado: Mapa 0");
                 break;
             case 1:
                 renderizadorFondo.sprite = fondoMapa1;
-                Debug.Log("Fondo asignado: Mapa 1");
                 break;
             case 2:
                 renderizadorFondo.sprite = fondoMapa2;
-                Debug.Log("Fondo asignado: Mapa 2");
                 break;
             case 3:
                 renderizadorFondo.sprite = fondoMapa3;
-                Debug.Log("Fondo asignado: Mapa 3");
                 break;
             default:
                 Debug.LogWarning($"Índice de mapa no válido: {indiceMapa}");
                 break;
         }
 
+        Debug.Log($"Fondo asignado: Mapa {indiceMapa}");
         renderizadorFondo.sortingOrder = 0;
 
         if (ajustarFondoAutomaticamente)
@@ -106,56 +113,45 @@ public class ControladorPelea : MonoBehaviour
 
     void CargarPersonaje()
     {
-        if (renderizadorJugador == null) return;
+        Debug.Log($"El personaje se está cocinando");
 
-        int indicePersonaje = DatosJuego.indicePersonajeSeleccionado;
-        string nombrePersonaje = DatosJuego.personajeSeleccionado;
+        int indicePersonajeUno = DatosJuego.indicePersonajeSeleccionadoUno;
+        int indicePersonajeDos = DatosJuego.indicePersonajeSeleccionadoDos;
 
-        Debug.Log($"Cargando personaje: {nombrePersonaje} (Índice: {indicePersonaje})");
+        // **CORRECCIÓN #1 y #2: Verificación de índice y uso correcto de Instantiate**
 
-        switch (indicePersonaje)
+        Debug.Log($"Personaje con ID {indicePersonajeUno} es el personaje {personajes[indicePersonajeUno].name}");
+        Debug.Log($"Personaje con ID {indicePersonajeDos} es el personaje {personajes[indicePersonajeDos].name}");
+
+        // Spawnea Personaje Uno
+        if (indicePersonajeUno >= 0 && indicePersonajeUno < personajes.Count)
         {
-            case 0:
-                renderizadorJugador.sprite = personaje0;
-                Debug.Log("Personaje asignado: Personaje 0");
-                break;
-            case 1:
-                renderizadorJugador.sprite = personaje1;
-                Debug.Log("Personaje asignado: Personaje 1");
-                break;
-            case 2:
-                renderizadorJugador.sprite = personaje2;
-                Debug.Log("Personaje asignado: Personaje 2");
-                break;
-            case 3:
-                renderizadorJugador.sprite = personaje3;
-                Debug.Log("Personaje asignado: Personaje 3");
-                break;
-            default:
-                Debug.LogWarning($"Índice de personaje no válido: {indicePersonaje}");
-                break;
-        }
-
-        renderizadorJugador.sortingOrder = ordenEnCapa;
-        renderizadorJugador.transform.localScale = escalaPersonaje;
-
-        if (posicionInicialJugador != null)
-        {
-            renderizadorJugador.transform.position = posicionInicialJugador.position;
-            Debug.Log($"Personaje colocado en: {posicionInicialJugador.position}");
+            // Usamos posicionPersonajeUno (que ahora es Vector3)
+            GameObject p1 = Instantiate(personajes[indicePersonajeUno], posicionPersonajeUno, Quaternion.identity);
+            ControlPlayer scriptDelClon = p1.GetComponent<ControlPlayer>();
+            scriptDelClon.usarControlesWASD = true;
+            Debug.Log($"Instancia uno spawneada: {p1.name}");
         }
         else
         {
-            renderizadorJugador.transform.position = new Vector3(-3f, -2f, 0f);
-            Debug.Log("Personaje colocado en posición por defecto (-3, -2, 0)");
+            Debug.LogError($"Error: Índice Personaje UNO ({indicePersonajeUno}) fuera de rango. Total de prefabs cargados: {personajes.Count}.");
         }
 
-        // IMPORTANTE: Asegurarse de que el personaje tenga un Collider2D
-        if (renderizadorJugador.GetComponent<Collider2D>() == null)
+        // Spawnea Personaje Dos
+        if (indicePersonajeDos >= 0 && indicePersonajeDos < personajes.Count)
         {
-            BoxCollider2D collider = renderizadorJugador.gameObject.AddComponent<BoxCollider2D>();
-            Debug.Log("Se agregó automáticamente un BoxCollider2D al personaje");
+            // Usamos posicionPersonajeDos (que ahora es Vector3)
+            GameObject p2 = Instantiate(personajes[indicePersonajeDos], posicionPersonajeDos, Quaternion.identity);
+            ControlPlayer scriptDelClon2 = p2.GetComponent<ControlPlayer>();
+            scriptDelClon2.usarControlesWASD = false;
+            Debug.Log($"Instancia dos spawneada: {p2.name}");
         }
+        else
+        {
+            Debug.LogError($"Error: Índice Personaje DOS ({indicePersonajeDos}) fuera de rango. Total de prefabs cargados: {personajes.Count}.");
+        }
+
+        // Se eliminó el foreach(GameObject i in personajes) { i.name; } obsoleto.
     }
 
     void ConfigurarSistemaVida()
@@ -166,48 +162,13 @@ public class ControladorPelea : MonoBehaviour
             return;
         }
 
-        // El sistema de vida se encargará de cargar los datos automáticamente
-        // Solo necesitamos asegurarnos de que tenga las referencias correctas
+        // Lógica de configuración...
         Debug.Log("Sistema de vida configurado correctamente");
     }
 
-    void ConfigurarSistemaPelea()
-    {
-        if (renderizadorJugador == null)
-        {
-            Debug.LogError("No se puede configurar el sistema de pelea: renderizadorJugador no asignado");
-            return;
-        }
-
-        // Obtener o agregar el componente ControladorPersonajePelea
-        controladorPelea = renderizadorJugador.GetComponent<ControladorPersonajePelea>();
-        if (controladorPelea == null)
-        {
-            controladorPelea = renderizadorJugador.gameObject.AddComponent<ControladorPersonajePelea>();
-            Debug.Log("ControladorPersonajePelea agregado automáticamente");
-        }
-
-        // Agregar Rigidbody2D si no existe
-        Rigidbody2D rb = renderizadorJugador.GetComponent<Rigidbody2D>();
-        if (rb == null)
-        {
-            rb = renderizadorJugador.gameObject.AddComponent<Rigidbody2D>();
-            rb.gravityScale = 2.5f;
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-            Debug.Log("Rigidbody2D agregado automáticamente");
-        }
-
-        Debug.Log("Sistema de pelea configurado correctamente");
-    }
-
-    void OnValidate()
-    {
-        if (renderizadorJugador != null)
-        {
-            renderizadorJugador.sortingOrder = ordenEnCapa;
-            renderizadorJugador.transform.localScale = escalaPersonaje;
-        }
-    }
+    // ==========================================================
+    // FUNCIÓN DE UTILIDAD
+    // ==========================================================
 
     void AjustarFondoAPantalla()
     {
@@ -240,4 +201,15 @@ public class ControladorPelea : MonoBehaviour
 
         Debug.Log($"Fondo ajustado - Escala: {escalaFinal}");
     }
+
+    // ==========================================================
+    // CÓDIGO COMENTADO (Referencia)
+    // ==========================================================
+
+    /*
+    // Este código y la función OnValidate() fueron extraídos de tu script original
+    // y se mantienen aquí como referencia, ya que no son necesarios para CargarPersonaje.
+    void ConfigurarSistemaPelea() { ... }
+    void OnValidate() { ... }
+    */
 }

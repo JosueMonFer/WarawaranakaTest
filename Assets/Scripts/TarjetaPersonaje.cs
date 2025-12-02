@@ -22,6 +22,7 @@ public class TarjetaPersonaje : MonoBehaviour
 
     public void InicializarTarjeta(ControladorSeleccion ctrl)
     {
+        Debug.Log($"La tarjeta con ID {indicePersonaje} corresponde al personaje {nombrePersonaje}");
         controlador = ctrl;
         botonSeleccionar.onClick.AddListener(AlClickearSeleccionar);
         DesactivarSeleccion();

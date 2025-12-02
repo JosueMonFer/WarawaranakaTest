@@ -6,7 +6,7 @@ public class ControladorSeleccion : MonoBehaviour
 {
     [Header("Tarjetas")]
     public TarjetaPersonaje[] tarjetas;
-
+    private int _turnoPersonaje = 1;
     [Header("Boton Listo")]
     public Button botonListo;
 
@@ -61,13 +61,33 @@ public class ControladorSeleccion : MonoBehaviour
             // Reproducir sonido específico del botón Listo
             ControladorSonidos.ObtenerInstancia()?.SonidoBotonListo();
 
+            //esto se borrara cuando se modifique el juego
             DatosJuego.personajeSeleccionado = tarjetaSeleccionada.ObtenerNombre();
             DatosJuego.indicePersonajeSeleccionado = tarjetaSeleccionada.indicePersonaje;
 
-            Debug.Log("¡Confirmado! Personaje: " + tarjetaSeleccionada.ObtenerNombre());
+            if(_turnoPersonaje == 1)
+            {
+                //selección de jugador 1
+                DatosJuego.personajeSeleccionadoUno = tarjetaSeleccionada.ObtenerNombre();
+                DatosJuego.indicePersonajeSeleccionadoUno = tarjetaSeleccionada.indicePersonaje;
+                _turnoPersonaje = 2;
+                //agregar disclaimer de seleccion de personajes
+                Debug.Log("¡Confirmado! Personaje: " + tarjetaSeleccionada.ObtenerNombre());
 
-            // Cargar escena de selección de mapa
-            SceneManager.LoadScene("SeleccionMapa");
+            }
+            else if(_turnoPersonaje == 2)
+            {
+                //selección del jugador 2
+                DatosJuego.personajeSeleccionadoDos = tarjetaSeleccionada.ObtenerNombre();
+                DatosJuego.indicePersonajeSeleccionadoDos = tarjetaSeleccionada.indicePersonaje;
+                Debug.Log("¡Confirmado! Personaje: " + tarjetaSeleccionada.ObtenerNombre());
+                // Cargar escena de selección de mapa
+                SceneManager.LoadScene("SeleccionMapa");
+
+            }
+
+
+              
         }
     }
 

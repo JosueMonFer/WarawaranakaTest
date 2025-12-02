@@ -20,6 +20,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EscenaPelea.unity
     guid: 4e0e24176d2be4841913a623af0deabd
+  - enabled: 1
+    path: Assets/Scenes/Minijuego1.unity
+    guid: a57ca3edc828f0849a0a1b0975b907b0
+  - enabled: 1
+    path: Assets/Scenes/Minijuego2.unity
+    guid: 721fc3c578dd38548bc92338d11e55e0
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

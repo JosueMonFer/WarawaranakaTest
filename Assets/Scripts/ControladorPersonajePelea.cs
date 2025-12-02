@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 
 public class ControladorPersonajePelea : MonoBehaviour
 {
@@ -47,15 +47,6 @@ public class ControladorPersonajePelea : MonoBehaviour
     [Header("Configuración de Animación")]
     public float velocidadAnimacionCorrer = 0.1f;
 
-    // Variables privadas de sprites actuales
-    private Sprite spriteIdle;
-    private Sprite[] spritesCorrer;
-    private Sprite spriteSalto;
-    private Sprite spriteAtaque1;
-    private Sprite spriteAtaque2;
-    private Sprite spriteAtaque3;
-    private Sprite spriteEspecial1;
-    private Sprite spriteEspecial2;
 
     // Componentes
     private Rigidbody2D rb;
@@ -140,7 +131,27 @@ public class ControladorPersonajePelea : MonoBehaviour
 
     void CargarSpritesPersonaje()
     {
-        int indicePersonaje = DatosJuego.indicePersonajeSeleccionado;
+
+        //determina que cubito es
+        string nombreComponentePadre = gameObject.name;
+        Debug.Log($"El nombre del gameobject es {nombreComponentePadre}");
+        //esto sirve para que el script se comporte distinto dependiendo de que componente sea
+
+        int indicePersonaje = -1;
+
+        if (nombreComponentePadre =="JugadorUno")
+        {
+            indicePersonaje = DatosJuego.indicePersonajeSeleccionadoUno;
+            Debug.Log($"Personaje seleccionado para el jugador Uno{indicePersonaje}");
+        }//JugadorDos
+        else
+        {
+            indicePersonaje = DatosJuego.indicePersonajeSeleccionadoDos;
+            Debug.Log($"Personaje seleccionado para el jugador Dos{indicePersonaje}");
+
+        }
+
+        //esto lo voy a tener que 
 
         Debug.Log($"Cargando sprites para personaje índice: {indicePersonaje}");
 
@@ -496,3 +507,4 @@ public class ControladorPersonajePelea : MonoBehaviour
         return mirandoDerecha;
     }
 }
+*/
