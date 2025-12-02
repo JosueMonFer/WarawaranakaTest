@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,12 +17,32 @@ public class TemporizadorPelea : MonoBehaviour
 
     [Header("Colores del Temporizador")]
     public Color colorNormal = Color.white;
-    public Color colorAdvertencia = Color.yellow; // Cuando quedan 30 segundos
-    public Color colorCritico = Color.red; // Cuando quedan 10 segundos
+    public Color colorAdvertencia = Color.yellow;
+    public Color colorCritico = Color.red;
+
+    [Header("Nombres de Jugadores")]
+    public string nombreJugador1 = "JUGADOR 1";
+    public string nombreJugador2 = "JUGADOR 2";
 
     private float tiempoRestante;
     private bool temporizadorActivo = true;
-    private bool empateDeclarado = false;
+    private bool peleaTerminada = false;
+
+    // Instancia estática para acceso global
+    private static TemporizadorPelea instancia;
+
+    void Awake()
+    {
+        // Configurar instancia estática
+        if (instancia == null)
+        {
+            instancia = this;
+        }
+        else
+        {
+            Debug.LogWarning("Ya existe una instancia de TemporizadorPelea");
+        }
+    }
 
     void Start()
     {
@@ -46,18 +66,14 @@ public class TemporizadorPelea : MonoBehaviour
 
     void Update()
     {
-        if (!temporizadorActivo || empateDeclarado)
+        if (!temporizadorActivo || peleaTerminada)
             return;
 
         tiempoRestante -= Time.deltaTime;
 
-        // Actualizar el texto del temporizador
         ActualizarTextoTemporizador();
-
-        // Cambiar color segun el tiempo restante
         ActualizarColorTemporizador();
 
-        // Verificar si el tiempo se acabo
         if (tiempoRestante <= 0)
         {
             tiempoRestante = 0;
@@ -83,7 +99,6 @@ public class TemporizadorPelea : MonoBehaviour
 
         if (tiempoRestante <= 10f)
         {
-            // Parpadeo en rojo cuando quedan 10 segundos
             textoTemporizador.color = Mathf.PingPong(Time.time * 2, 1) > 0.5f ? colorCritico : colorNormal;
         }
         else if (tiempoRestante <= 30f)
@@ -98,38 +113,90 @@ public class TemporizadorPelea : MonoBehaviour
 
     void DeclararEmpate()
     {
-        if (empateDeclarado)
+        if (peleaTerminada)
             return;
 
-        empateDeclarado = true;
+        peleaTerminada = true;
         temporizadorActivo = false;
 
-        Debug.Log("�EMPATE! El tiempo se ha agotado");
+        Debug.Log("¡EMPATE! El tiempo se ha agotado");
 
-        // Pausar el juego
         Time.timeScale = 0f;
 
-        // Pausar la m�sica de pelea
         ControladorMusicaPelea musicaPelea = ControladorMusicaPelea.ObtenerInstancia();
         if (musicaPelea != null)
         {
             musicaPelea.PausarMusica();
-            Debug.Log("M�sica de pelea pausada");
-        }
-        else
-        {
-            Debug.LogWarning("No se encontr� ControladorMusicaPelea");
+            Debug.Log("Música de pelea pausada");
         }
 
-        // Mostrar panel de empate
         if (panelResultadoEmpate != null)
         {
             panelResultadoEmpate.SetActive(true);
 
             if (textoResultado != null)
             {
-                textoResultado.text = "�EMPATE!\n\nEl tiempo se ha agotado";
+                textoResultado.text = "¡EMPATE!\n\nEl tiempo se ha agotado";
             }
+        }
+    }
+
+    /// <summary>
+    /// Declara al ganador de la pelea. Método estático para llamar desde cualquier script.
+    /// </summary>
+    /// <param name="numeroJugador">1 para Jugador 1, 2 para Jugador 2</param>
+    public static void DeclararGanador(int numeroJugador)
+    {
+        if (instancia == null)
+        {
+            Debug.LogError("No hay instancia de TemporizadorPelea en la escena!");
+            return;
+        }
+
+        instancia.MostrarVictoria(numeroJugador);
+    }
+
+    /// <summary>
+    /// Método interno que maneja la lógica de mostrar la victoria
+    /// </summary>
+    private void MostrarVictoria(int numeroJugador)
+    {
+        if (peleaTerminada)
+        {
+            Debug.LogWarning("La pelea ya había terminado");
+            return;
+        }
+
+        peleaTerminada = true;
+        temporizadorActivo = false;
+
+        string nombreGanador = numeroJugador == 1 ? nombreJugador1 : nombreJugador2;
+        Debug.Log($"¡{nombreGanador} ha ganado la pelea!");
+
+        // Pausar el juego
+        Time.timeScale = 0f;
+
+        // Pausar la música de pelea
+        ControladorMusicaPelea musicaPelea = ControladorMusicaPelea.ObtenerInstancia();
+        if (musicaPelea != null)
+        {
+            musicaPelea.PausarMusica();
+            Debug.Log("Música de pelea pausada");
+        }
+
+        // Mostrar panel de resultado (reutilizamos el panel de empate)
+        if (panelResultadoEmpate != null)
+        {
+            panelResultadoEmpate.SetActive(true);
+
+            if (textoResultado != null)
+            {
+                textoResultado.text = $"¡{nombreGanador}\nHA GANADO!\n\n🏆 VICTORIA 🏆";
+            }
+        }
+        else
+        {
+            Debug.LogError("No se encontró el panel de resultado");
         }
     }
 
@@ -140,7 +207,7 @@ public class TemporizadorPelea : MonoBehaviour
 
     public void ReanudarTemporizador()
     {
-        if (!empateDeclarado)
+        if (!peleaTerminada)
         {
             temporizadorActivo = true;
         }
@@ -158,24 +225,28 @@ public class TemporizadorPelea : MonoBehaviour
 
     void VolverAlMenu()
     {
-        // Restaurar el tiempo normal PRIMERO
         Time.timeScale = 1f;
 
-        // Detener y destruir la m�sica de pelea
         ControladorMusicaPelea musicaPelea = ControladorMusicaPelea.ObtenerInstancia();
         if (musicaPelea != null)
         {
             musicaPelea.DestruirInstancia();
-            Debug.Log("M�sica de pelea destruida");
+            Debug.Log("Música de pelea destruida");
         }
 
-        // Limpiar datos
         DatosJuego.LimpiarDatos();
 
-        // Reproducir sonido
         ControladorSonidos.ObtenerInstancia()?.SonidoBotonAtras();
 
-        // Volver al menu principal
         SceneManager.LoadScene("MainMenu");
+    }
+
+    void OnDestroy()
+    {
+        // Limpiar la instancia cuando se destruye el objeto
+        if (instancia == this)
+        {
+            instancia = null;
+        }
     }
 }

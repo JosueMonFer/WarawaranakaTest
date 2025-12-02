@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2663105100557829680}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,13 +24,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4974592069579068108}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.55, y: 0, z: 0}
-  m_LocalScale: {x: 1.2375, y: 1.65, z: 1}
+  m_LocalRotation: {x: -0, y: -0.010943354, z: -0, w: 0.99994016}
+  m_LocalPosition: {x: 1.6, y: -0.19, z: 0.21}
+  m_LocalScale: {x: 0.000036234997, y: 0.000047499998, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5523191203348373188}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -1.254, z: 0}
 --- !u!1 &8272124000734912512
 GameObject:
   m_ObjectHideFlags: 0
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 1136472593071808509}
   - component: {fileID: 2485403425911283266}
   - component: {fileID: 5180070821457059073}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: donramon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,6 +223,7 @@ MonoBehaviour:
     m_Bits: 0
   restringirAPantalla: 1
   margenLimite: 0.5
+  identificadorJugador: 0
 --- !u!114 &2485403425911283266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,11 +236,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec21f36c9f831484faf55568d8e2fa4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  usarWASD: 0
   puntoDeAtaque: {fileID: 2663105100557829680}
   capaEnemigos:
     serializedVersion: 2
     m_Bits: 128
-  rangoAtaque: 2
+  rangoAtaque: 0.1
   "da\xF1o": 20
   fuerzaEmpuje: 200
   tiempoEntreAtaques: 0.5

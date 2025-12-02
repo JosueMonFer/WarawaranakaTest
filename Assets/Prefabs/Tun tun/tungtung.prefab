@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1731616484621085420}
   - component: {fileID: -7294312943000478624}
   - component: {fileID: 2378475539845938687}
+  - component: {fileID: 3324019491782714498}
   m_Layer: 7
   m_Name: tungtung
   m_TagString: Untagged
@@ -33,7 +34,8 @@ Transform:
   m_LocalPosition: {x: 4.05, y: -3.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 406372859954532159}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1150845521750187855
@@ -190,6 +192,7 @@ MonoBehaviour:
     m_Bits: 0
   restringirAPantalla: 1
   margenLimite: 0.5
+  identificadorJugador: 0
 --- !u!95 &2378475539845938687
 Animator:
   serializedVersion: 7
@@ -212,3 +215,55 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3324019491782714498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3489345328747499830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec21f36c9f831484faf55568d8e2fa4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  usarWASD: 0
+  puntoDeAtaque: {fileID: 406372859954532159}
+  capaEnemigos:
+    serializedVersion: 2
+    m_Bits: 128
+  rangoAtaque: 0.1
+  "da\xF1o": 20
+  fuerzaEmpuje: 100
+  tiempoEntreAtaques: 0.5
+--- !u!1 &4542948770483721861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 406372859954532159}
+  m_Layer: 7
+  m_Name: hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &406372859954532159
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4542948770483721861}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.4, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5396399774254093737}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

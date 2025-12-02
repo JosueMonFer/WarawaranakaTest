@@ -15,6 +15,8 @@ public static class DatosJuego
     public static string personajeSeleccionadoDos;
     public static int indicePersonajeSeleccionadoDos;
 
+    public static float VidaPersonajeUno;
+    public static float VidaPersonajeDos;
 
     public static string mapaSeleccionado;
     public static int indiceMapaSeleccionado;

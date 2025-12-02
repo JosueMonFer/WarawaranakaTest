@@ -3096,6 +3096,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TemporizadorPelea
   duracionPelea: 120
+  duracionPelea: 30
   textoTemporizador: {fileID: 326615806}
   panelResultadoEmpate: {fileID: 542289199}
   textoResultado: {fileID: 384942850}
@@ -3103,6 +3104,8 @@ MonoBehaviour:
   colorNormal: {r: 1, g: 1, b: 1, a: 1}
   colorAdvertencia: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   colorCritico: {r: 1, g: 0, b: 0, a: 1}
+  nombreJugador1: JUGADOR 1
+  nombreJugador2: JUGADOR 2
 --- !u!4 &531157728
 Transform:
   m_ObjectHideFlags: 0
@@ -3596,7 +3599,7 @@ MonoBehaviour:
   personajes:
   - {fileID: 5700335032121942430, guid: ad251ede8a8c5214caabb584d3075018, type: 3}
   - {fileID: 833728384140212773, guid: 6ddba40271e5eb64ca573754b29310b3, type: 3}
-  - {fileID: 7972293902733988905, guid: 978c43559371c304087835ba0d153b9a, type: 3}
+  - {fileID: 8272124000734912512, guid: 978c43559371c304087835ba0d153b9a, type: 3}
   - {fileID: 3489345328747499830, guid: bef39f3c50a64684eaee489c2661a6ab, type: 3}
   posicionPersonajeUno: {x: -3.6071, y: -3.66, z: 0}
   posicionPersonajeDos: {x: 6.82, y: -3.66, z: 0}
@@ -3630,11 +3633,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6097200ee11b4a34eab51edc85d3f641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ControladorMusicaPelea
-  musicaMapa0: {fileID: 0}
-  musicaMapa1: {fileID: 8300000, guid: c9b018243336d9d48bc6c5d5b6ffe17b, type: 3}
+  musicaMapa0: {fileID: 8300000, guid: 7790c570788b9294e8a80a726e775200, type: 3}
+  musicaMapa1: {fileID: 8300000, guid: 0cf0b4cc1461cf24dacaf92c0d9ee85a, type: 3}
   musicaMapa2: {fileID: 8300000, guid: eb991cf0c5502ee49b1b34313c8717ff, type: 3}
-  musicaMapa3: {fileID: 0}
-  volumenMusica: 0.6
+  musicaMapa3: {fileID: 8300000, guid: c9b018243336d9d48bc6c5d5b6ffe17b, type: 3}
+  volumenMusica: 0.7
 --- !u!4 &706558283
 Transform:
   m_ObjectHideFlags: 0
@@ -4434,6 +4437,7 @@ GameObject:
   - component: {fileID: 1029160530}
   - component: {fileID: 1029160529}
   - component: {fileID: 1029160528}
+  - component: {fileID: 1029160532}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -4527,6 +4531,35 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1029160532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029160527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b4e697dc2127de4eb30e20c0bffd279, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SistemaVidaPersonaje
+  fotosPersonajes: []
+  nombresPersonajes:
+  - Personaje 1
+  - Personaje 2
+  - Personaje 3
+  - Personaje 4
+  vidaMaxima: 100
+  barraVidaFill: {fileID: 1399957605}
+  textoVida: {fileID: 401688597}
+  textoNombre: {fileID: 277902573}
+  imagenPersonaje: {fileID: 230426428}
+  "da\xF1oPorClick": 10
+  colorVidaAlta: {r: 0, g: 1, b: 0, a: 1}
+  colorVidaMedia: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorVidaBaja: {r: 1, g: 0, b: 0, a: 1}
+  velocidadAnimacion: 0.5
+  usarAnimacionSuave: 1
 --- !u!1 &1039369207
 GameObject:
   m_ObjectHideFlags: 0

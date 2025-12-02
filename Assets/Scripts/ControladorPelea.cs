@@ -130,6 +130,9 @@ public class ControladorPelea : MonoBehaviour
             GameObject p1 = Instantiate(personajes[indicePersonajeUno], posicionPersonajeUno, Quaternion.identity);
             ControlPlayer scriptDelClon = p1.GetComponent<ControlPlayer>();
             scriptDelClon.usarControlesWASD = true;
+            scriptDelClon.identificadorJugador = 1;
+            PlayerCombat scriptDelClon3 = p1.GetComponent<PlayerCombat>();
+            scriptDelClon3.usarWASD = true;
             Debug.Log($"Instancia uno spawneada: {p1.name}");
         }
         else
@@ -144,6 +147,10 @@ public class ControladorPelea : MonoBehaviour
             GameObject p2 = Instantiate(personajes[indicePersonajeDos], posicionPersonajeDos, Quaternion.identity);
             ControlPlayer scriptDelClon2 = p2.GetComponent<ControlPlayer>();
             scriptDelClon2.usarControlesWASD = false;
+            scriptDelClon2.identificadorJugador = 2;
+
+            PlayerCombat scriptDelClon4 = p2.GetComponent<PlayerCombat>();
+            scriptDelClon4.usarWASD = false;
             Debug.Log($"Instancia dos spawneada: {p2.name}");
         }
         else

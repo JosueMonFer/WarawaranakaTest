@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 6462702949638128007}
   - component: {fileID: 2954301831276705969}
   - component: {fileID: 6923979796560137472}
-  m_Layer: 0
+  - component: {fileID: 6711210603407616857}
+  m_Layer: 7
   m_Name: richard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33,7 +34,8 @@ Transform:
   m_LocalPosition: {x: -0.33, y: -3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2909205743856305774}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5883258477838518057
@@ -190,6 +192,7 @@ MonoBehaviour:
     m_Bits: 0
   restringirAPantalla: 1
   margenLimite: 0.5
+  identificadorJugador: 0
 --- !u!95 &6923979796560137472
 Animator:
   serializedVersion: 7
@@ -212,3 +215,55 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6711210603407616857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 833728384140212773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec21f36c9f831484faf55568d8e2fa4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  usarWASD: 0
+  puntoDeAtaque: {fileID: 2909205743856305774}
+  capaEnemigos:
+    serializedVersion: 2
+    m_Bits: 128
+  rangoAtaque: 0.1
+  "da\xF1o": 20
+  fuerzaEmpuje: 100
+  tiempoEntreAtaques: 0.5
+--- !u!1 &4021445372290646642
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2909205743856305774}
+  m_Layer: 0
+  m_Name: hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2909205743856305774
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4021445372290646642}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.65, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3319773652656615632}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

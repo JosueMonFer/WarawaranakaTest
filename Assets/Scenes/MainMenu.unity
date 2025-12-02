@@ -1110,7 +1110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a9b225e92efa0408072c21e8ede30e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ControladorSonidos
-  sonidoBotonComenzar: {fileID: 8300000, guid: a252829967a619e449173979d087c4b8, type: 3}
+  sonidoBotonComenzar: {fileID: 8300000, guid: b34d8268020628f47ac73a5284c21442, type: 3}
   sonidoBotonAjustes: {fileID: 8300000, guid: bfe41db04dfe072408ce4d3d60ca4815, type: 3}
   sonidoBotonSalir: {fileID: 8300000, guid: 9abef48e0bc6a424ab80b931939316cb, type: 3}
   sonidoBotonAtras: {fileID: 8300000, guid: a30542f88a8bf204a8c4160ba5d1dc77, type: 3}
@@ -1119,13 +1119,13 @@ MonoBehaviour:
   sonidoSeleccionPersonaje2: {fileID: 8300000, guid: 49dc766520d50214b9dd25487fb3a566, type: 3}
   sonidoSeleccionPersonaje3: {fileID: 8300000, guid: 50fea6529de414640a5176fb7b3611cd, type: 3}
   sonidoSeleccionPersonaje4: {fileID: 8300000, guid: f3543399ae759ca4ebc7ac3123e7588e, type: 3}
-  sonidoBotonListo: {fileID: 8300000, guid: 1399bc027854afa48a6f3ef9fc521751, type: 3}
+  sonidoBotonListo: {fileID: 8300000, guid: b34d8268020628f47ac73a5284c21442, type: 3}
   sonidoSeleccionMapa: {fileID: 8300000, guid: b34d8268020628f47ac73a5284c21442, type: 3}
   sonidoComenzarMapa1: {fileID: 8300000, guid: 7a8676970853042408f96e60d0a12b20, type: 3}
   sonidoComenzarMapa2: {fileID: 8300000, guid: 2a6f08db875bd5a41befd3a12366a5e8, type: 3}
   sonidoComenzarMapa3: {fileID: 8300000, guid: b8476a5deebb74c45b1be03c8180988c, type: 3}
-  sonidoComenzarMapa4: {fileID: 0}
-  volumenEfectos: 0.7
+  sonidoComenzarMapa4: {fileID: 8300000, guid: be914de7405b8ca4b89d94897156cf90, type: 3}
+  volumenEfectos: 0.6
 --- !u!1 &534001327
 GameObject:
   m_ObjectHideFlags: 0

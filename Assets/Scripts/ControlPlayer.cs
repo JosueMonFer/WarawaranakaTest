@@ -1,5 +1,6 @@
 using System.Data.Common;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class ControlPlayer : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class ControlPlayer : MonoBehaviour
     public Rigidbody2D rb;
     public float velocidadMovimiento = 5f;
     public float fuerzaSalto = 7f; // Fuerza para el salto
-
+    private float vidaActual = 100f;
     [Header("Configuraci�n de Controles")]
     [Tooltip("Si es True usa A,W,D. Si es False usa Flechas.")]
     public bool usarControlesWASD = true;
@@ -25,7 +26,9 @@ public class ControlPlayer : MonoBehaviour
     [Header("L�mites de Pantalla")]
     public bool restringirAPantalla = true;
     public float margenLimite = 0.5f;
-    
+
+    public int identificadorJugador;
+
     Animator anim;
 
     void Start()
@@ -44,6 +47,35 @@ public class ControlPlayer : MonoBehaviour
         MoverJugador();
         RestringirDentroDePantalla(); // Aplicamos los l�mites calculados
     }
+
+
+    public void RecibirDano(float daño)
+    {
+        vidaActual -= daño;
+        Debug.Log($"La vida restante es de {vidaActual}");
+        if(identificadorJugador == 1)
+        {
+            DatosJuego.VidaPersonajeUno = vidaActual;
+        }
+        else
+        {
+            DatosJuego.VidaPersonajeDos = vidaActual;
+        }
+        if (vidaActual <= 0)
+        {
+            vidaActual = 0;
+            Morir();
+        }
+    }
+
+    void Morir()
+    {
+        Debug.Log($"Jugador {identificadorJugador} ha muerto");
+
+        // El otro jugador gana
+        TemporizadorPelea.DeclararGanador(identificadorJugador == 1?  2 : 1);
+    }
+
 
     void MoverJugador()
     {
