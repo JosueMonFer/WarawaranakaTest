@@ -25,9 +25,13 @@ public class ControlPlayer : MonoBehaviour
     [Header("L�mites de Pantalla")]
     public bool restringirAPantalla = true;
     public float margenLimite = 0.5f;
+    
+    Animator anim;
 
     void Start()
     {
+        anim = GetComponent<Animator>();
+
         // Si no asignaste el RB manualmente, lo buscamos
         if (rb == null) rb = GetComponent<Rigidbody2D>();
 
@@ -39,7 +43,6 @@ public class ControlPlayer : MonoBehaviour
     {
         MoverJugador();
         RestringirDentroDePantalla(); // Aplicamos los l�mites calculados
-        Debug.Log($"aaaa");
     }
 
     void MoverJugador()
@@ -72,6 +75,14 @@ public class ControlPlayer : MonoBehaviour
 
         //esta línea es la que hace el movimiento
         rb.linearVelocity = new Vector2(inputHorizontal * velocidadMovimiento, rb.linearVelocity.y);
+
+        // ----- Animación de caminar -----
+bool estaCaminando = Mathf.Abs(inputHorizontal) > 0.1f;
+anim.SetBool("isWalking", estaCaminando);
+
+// Flip del sprite
+if (inputHorizontal > 0) transform.localScale = new Vector3(1, 1, 1);
+if (inputHorizontal < 0) transform.localScale = new Vector3(-1, 1, 1);
 
         // 2. Detectar si estamos tocando el suelo (para no saltar infinito)
         // Crea un peque�o c�rculo en los pies para ver si toca la capa "Suelo"

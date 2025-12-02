@@ -1,56 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2117669315839036456
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7269136020524725289}
-  - component: {fileID: 8174737657767225180}
-  m_Layer: 0
-  m_Name: DetectorGolpes
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7269136020524725289
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2117669315839036456}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5396399774254093737}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8174737657767225180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2117669315839036456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3aebd233d72a62146983a2ab0d45de1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DetectorGolpes
-  rangoAtaque: 1.5
-  capaEnemigos:
-    serializedVersion: 2
-    m_Bits: 0
-  offsetAtaque: {x: 0.8, y: 0}
-  mostrarGizmos: 1
-  colorGizmo: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &3489345328747499830
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,10 +12,8 @@ GameObject:
   - component: {fileID: 1150845521750187855}
   - component: {fileID: 5159748562192124477}
   - component: {fileID: 1731616484621085420}
-  - component: {fileID: 3663520502917648057}
-  - component: {fileID: 2045775615549099263}
   - component: {fileID: -7294312943000478624}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: tungtung
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,9 +32,7 @@ Transform:
   m_LocalPosition: {x: 4.05, y: -3.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8838477425978519034}
-  - {fileID: 7269136020524725289}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1150845521750187855
@@ -221,102 +166,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
---- !u!114 &3663520502917648057
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3489345328747499830}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b4e697dc2127de4eb30e20c0bffd279, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SistemaVidaPersonaje
-  fotosPersonajes:
-  - {fileID: -8910096776707602078, guid: 0fcb170687b501444b6beaafdb171ab7, type: 3}
-  - {fileID: -8076883045012288559, guid: b8105fcc5936223458e6efbdbb255e83, type: 3}
-  - {fileID: -1572603678530704941, guid: c56c04d0a335ea448930ce9394ed0ade, type: 3}
-  - {fileID: 5059742542331602073, guid: 2361df743d10e9a4fbd4ba215e224ca0, type: 3}
-  nombresPersonajes:
-  - AMLO
-  - RICHARD
-  - DON RAMON
-  - TUNG SAHUR
-  vidaMaxima: 100
-  barraVidaFill: {fileID: 0}
-  textoVida: {fileID: 0}
-  textoNombre: {fileID: 0}
-  imagenPersonaje: {fileID: 0}
-  "da\xF1oPorClick": 10
-  colorVidaAlta: {r: 0, g: 1, b: 0, a: 1}
-  colorVidaMedia: {r: 1, g: 1, b: 0, a: 1}
-  colorVidaBaja: {r: 1, g: 0, b: 0, a: 1}
-  velocidadAnimacion: 0.5
-  usarAnimacionSuave: 1
---- !u!114 &2045775615549099263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3489345328747499830}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6b7fbfa26b2c3840a081a4fab4c1708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ControladorPersonajePelea
-  velocidadMovimiento: 5
-  fuerzaSalto: 12
-  gravedadMultiplicador: 2.5
-  restringirAPantalla: 1
-  margenLimite: 0.2
-  puntoDeteccionSuelo: {fileID: 8838477425978519034}
-  radioDeteccionSuelo: 0.2
-  capaSuelo:
-    serializedVersion: 2
-    m_Bits: 64
-  spritesPersonajes:
-  - spriteIdle: {fileID: -8910096776707602078, guid: 0fcb170687b501444b6beaafdb171ab7, type: 3}
-    spritesCorrer: []
-    spriteSalto: {fileID: -8910096776707602078, guid: 0fcb170687b501444b6beaafdb171ab7, type: 3}
-    spriteAtaque1: {fileID: -1572603678530704941, guid: c56c04d0a335ea448930ce9394ed0ade, type: 3}
-    spriteAtaque2: {fileID: -8076883045012288559, guid: b8105fcc5936223458e6efbdbb255e83, type: 3}
-    spriteAtaque3: {fileID: 5059742542331602073, guid: 2361df743d10e9a4fbd4ba215e224ca0, type: 3}
-    spriteEspecial1: {fileID: -8017227968030301957, guid: 43e10e90d0520204a8968870584d741e, type: 3}
-    spriteEspecial2: {fileID: 4565690473589415685, guid: cf385dbd467e1374994eb2cad0041b26, type: 3}
-  - spriteIdle: {fileID: -7831750259432833498, guid: 1659cad646fa34e458eb5d93b6f4dc02, type: 3}
-    spritesCorrer: []
-    spriteSalto: {fileID: 0}
-    spriteAtaque1: {fileID: -2282153967937434049, guid: 1659cad646fa34e458eb5d93b6f4dc02, type: 3}
-    spriteAtaque2: {fileID: 0}
-    spriteAtaque3: {fileID: 0}
-    spriteEspecial1: {fileID: 0}
-    spriteEspecial2: {fileID: 0}
-  - spriteIdle: {fileID: 0}
-    spritesCorrer: []
-    spriteSalto: {fileID: 0}
-    spriteAtaque1: {fileID: 0}
-    spriteAtaque2: {fileID: 0}
-    spriteAtaque3: {fileID: 0}
-    spriteEspecial1: {fileID: 0}
-    spriteEspecial2: {fileID: 0}
-  - spriteIdle: {fileID: 0}
-    spritesCorrer: []
-    spriteSalto: {fileID: 0}
-    spriteAtaque1: {fileID: 0}
-    spriteAtaque2: {fileID: 0}
-    spriteAtaque3: {fileID: 0}
-    spriteEspecial1: {fileID: 0}
-    spriteEspecial2: {fileID: 0}
-  duracionAtaque: 0.3
-  "da\xF1oAtaque1": 10
-  "da\xF1oAtaque2": 15
-  "da\xF1oAtaque3": 20
-  "da\xF1oEspecial1": 30
-  "da\xF1oEspecial2": 35
-  detectorGolpes: {fileID: 8174737657767225180}
-  velocidadAnimacionCorrer: 0.1
 --- !u!114 &-7294312943000478624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,34 +179,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ControlPlayer
   rb: {fileID: 5159748562192124477}
---- !u!1 &6856733513337548311
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8838477425978519034}
-  m_Layer: 0
-  m_Name: PuntoDeteccionSuelo
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8838477425978519034
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6856733513337548311}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5396399774254093737}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  velocidadMovimiento: 5
+  fuerzaSalto: 7
+  usarControlesWASD: 1
+  pies: {fileID: 0}
+  radioDeteccionSuelo: 0.2
+  capaSuelo:
+    serializedVersion: 2
+    m_Bits: 0
+  restringirAPantalla: 1
+  margenLimite: 0.5
